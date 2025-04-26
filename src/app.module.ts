@@ -8,6 +8,7 @@ import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -26,6 +27,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true, // Только в разработке!
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

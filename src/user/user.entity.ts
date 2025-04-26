@@ -17,4 +17,8 @@ export class User {
   @Field()
   @Column()
   name: string;
+
+  @Field({ nullable: false })
+  @Column()
+  password: string;
 }
