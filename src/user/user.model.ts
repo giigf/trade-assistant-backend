@@ -1,9 +1,12 @@
-// src/user/user.model.ts
-
+// user.model.ts (GraphQL безопасная модель)
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 
+export enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
 @ObjectType()
-export class User {
+export class UserModel {
   @Field(() => Int)
   id: number;
 
@@ -12,4 +15,7 @@ export class User {
 
   @Field()
   name: string;
+
+  @Field(() => Role)
+  role: Role;
 }

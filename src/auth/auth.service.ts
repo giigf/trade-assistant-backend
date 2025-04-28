@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/user.entity';
+import { UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Role, User } from 'src/user/user.entity';
 import { RegisterInput } from './dto/register.input';
 import { LoginInput } from './dto/login.input';
 import { JwtService } from '@nestjs/jwt';
@@ -18,9 +19,19 @@ export class AuthService {
     const emailExist = await this.userRepo.findOne({
       where: { email: data.email },
     });
-    if (emailExist) throw new Error('Такой пользователь уже существует');
-    const user = await this.userRepo.save(this.userRepo.create(data));
-    const token = this.jwtService.sign({ id: user.id, email: user.email });
+    if (emailExist) throw new ConflictException('Такой email уже используется');
+    const user = await this.userRepo.save(
+      this.userRepo.create({
+        ...data,
+        role: Role.USER,
+      }),
+    );
+    const token = this.jwtService.sign({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
+
     return token;
   }
 
@@ -28,10 +39,14 @@ export class AuthService {
     const user = await this.userRepo.findOne({ where: { email: data.email } });
 
     if (!user || data.password !== user.password) {
-      throw new Error('Неверный email или пароль');
+      throw new UnauthorizedException('Неверный пароль или email');
     }
 
-    const token = this.jwtService.sign({ id: user.id, email: user.email });
+    const token = this.jwtService.sign({
+      email: user.email,
+      id: user.id,
+      role: user.role,
+    }); // Добавьте роль в payload });
     return token;
   }
 }

@@ -7,24 +7,25 @@ type User {
   email: String!
   name: String!
   password: String!
+  role: Role!
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 type Query {
   getUsers: [User!]!
   getUser(id: Int!): User!
+  me: User!
 }
 
 type Mutation {
-  createUser(data: CreateUserInput!): User!
   updateUser(data: UpdateUserInput!): User!
   deleteUser(id: Int!): Boolean!
   register(data: RegisterInput!): String!
   login(data: LoginInput!): String!
-}
-
-input CreateUserInput {
-  email: String!
-  name: String!
 }
 
 input UpdateUserInput {
