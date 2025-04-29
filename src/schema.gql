@@ -15,10 +15,27 @@ enum Role {
   ADMIN
 }
 
+type TradeModel {
+  id: Int!
+  userId: Int!
+  date_start: DateTime!
+  date_end: DateTime!
+  note: String
+  start_price: Float!
+  end_price: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
   getUsers: [User!]!
   getUser(id: Int!): User!
   me: User!
+  getAllTrade: [TradeModel!]!
+  getTrade(id: Int!): TradeModel!
 }
 
 type Mutation {
@@ -26,6 +43,9 @@ type Mutation {
   deleteUser(id: Int!): Boolean!
   register(data: RegisterInput!): String!
   login(data: LoginInput!): String!
+  createTrade(data: CreateTradeInput!): TradeModel!
+  updateTrade(data: UpdateTradeInput!): TradeModel!
+  deleteTrade(id: Int!): TradeModel!
 }
 
 input UpdateUserInput {
@@ -43,4 +63,21 @@ input RegisterInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input CreateTradeInput {
+  date_start: DateTime!
+  date_end: DateTime!
+  note: String
+  start_price: Float!
+  end_price: Float!
+}
+
+input UpdateTradeInput {
+  date_start: DateTime
+  date_end: DateTime
+  note: String
+  start_price: Float
+  end_price: Float
+  id: Int!
 }

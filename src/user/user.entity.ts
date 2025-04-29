@@ -1,7 +1,8 @@
 // src/user/user.entity.ts
 
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
+import { Trade } from 'src/trade/trade.entity';
 
 export enum Role {
   USER = 'USER',
@@ -34,4 +35,7 @@ export class User {
   @Field(() => Role)
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @OneToMany(() => Trade, (trade) => trade.user)
+  trades: Trade[];
 }

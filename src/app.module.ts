@@ -11,6 +11,8 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, Reflector } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
 import { AuthModule } from './auth/auth.module';
+import { TradeModule } from './trade/trade.module';
+import { Trade } from './trade/trade.entity';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -25,11 +27,12 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [User],
+      entities: [User, Trade],
       synchronize: true, // Только в разработке!
     }),
     UserModule,
     AuthModule,
+    TradeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
