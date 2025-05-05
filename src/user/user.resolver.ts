@@ -9,26 +9,27 @@ import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { UserModel } from './user.model';
 
-@Resolver(() => User)
+@Resolver(() => UserModel)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  @Query(() => [User])
-  getUsers(): Promise<User[]> {
+  @Query(() => [UserModel])
+  getUsers(): Promise<UserModel[]> {
     return this.userService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query(() => User)
-  getUser(@Args('id', { type: () => Int }) id: number): Promise<User> {
+  @Query(() => UserModel)
+  getUser(@Args('id', { type: () => Int }) id: number): Promise<UserModel> {
     return this.userService.findOne(id);
   }
 
-  @Mutation(() => User)
-  updateUser(@Args('data') data: UpdateUserInput): Promise<User> {
+  @Mutation(() => UserModel)
+  updateUser(@Args('data') data: UpdateUserInput): Promise<UserModel> {
     return this.userService.updateUser(data);
   }
 
@@ -39,8 +40,8 @@ export class UserResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query(() => User)
-  me(@CurrentUser() user: User) {
+  @Query(() => UserModel)
+  me(@CurrentUser() user: UserModel) {
     return this.userService.findOne(user.id);
   }
 }

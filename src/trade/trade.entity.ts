@@ -1,5 +1,6 @@
 // src/trade/trade.entity.ts
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
+
 import {
   Entity,
   PrimaryGeneratedColumn,
