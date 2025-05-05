@@ -18,7 +18,7 @@ import { User } from '../user/user.entity';
 
   const trades = Array.from({ length: 55 }).map((_, i) =>
     tradeRepo.create({
-      user: { id: 1 }, // вот так правильно, если есть связь
+      user: { id: 4 }, // вот так правильно, если есть связь
       date_start: new Date(`2024-04-${(i % 27) + 1}`),
       date_end: new Date(`2024-04-${(i % 27) + 2}`),
       note: `Симуляция трейда #${i + 1}`,

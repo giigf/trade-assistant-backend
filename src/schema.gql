@@ -14,6 +14,11 @@ enum Role {
   ADMIN
 }
 
+type ResponseToken {
+  accessToken: String
+  refreshToken: String
+}
+
 type TradeModel {
   id: Int!
   userId: Int!
@@ -93,8 +98,9 @@ enum SortDirection {
 type Mutation {
   updateUser(data: UpdateUserInput!): UserModel!
   deleteUser(id: Int!): Boolean!
-  register(data: RegisterInput!): String!
-  login(data: LoginInput!): String!
+  register(data: RegisterInput!): ResponseToken!
+  login(data: LoginInput!): ResponseToken!
+  refresh(refreshToken: String!): ResponseToken!
   createTrade(data: CreateTradeInput!): TradeResponse!
   updateTrade(data: UpdateTradeInput!): TradeResponse!
   deleteTrade(id: Int!): BooleanResponse!

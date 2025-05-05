@@ -27,4 +27,7 @@ export class User {
 
   @OneToMany(() => Trade, (trade) => trade.user)
   trades: Trade[];
+
+  @Column({ type: 'int', default: 0 })
+  tokenVersion: number;
 }
