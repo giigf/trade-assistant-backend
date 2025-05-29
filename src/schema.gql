@@ -59,12 +59,21 @@ type BooleanResponse {
   data: Boolean
 }
 
+type CommentModel {
+  id: Int!
+  userId: Int!
+  tradeId: Int!
+  date: DateTime!
+  text: String!
+}
+
 type Query {
   getUsers: [UserModel!]!
   getUser(id: Int!): UserModel!
   me: UserModel!
   getAllTrade(filter: GetTradesArgs!): PaginatedTradesResponse!
   getTrade(id: Int!): TradeResponse!
+  getCommentsTrade(tradeId: Int!): [CommentModel!]!
 }
 
 input GetTradesArgs {
@@ -104,6 +113,7 @@ type Mutation {
   createTrade(data: CreateTradeInput!): TradeResponse!
   updateTrade(data: UpdateTradeInput!): TradeResponse!
   deleteTrade(id: Int!): BooleanResponse!
+  createComment(data: CreateCommentInput!): CommentModel!
 }
 
 input UpdateUserInput {
@@ -138,4 +148,9 @@ input UpdateTradeInput {
   start_price: Float
   end_price: Float
   id: Int!
+}
+
+input CreateCommentInput {
+  text: String!
+  tradeId: Int!
 }

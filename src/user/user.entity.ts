@@ -2,6 +2,7 @@
 
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Trade } from '../trade/trade.entity';
+import { Comment } from '../comments/comments.entity';
 
 export enum Role {
   USER = 'USER',
@@ -27,6 +28,9 @@ export class User {
 
   @OneToMany(() => Trade, (trade) => trade.user)
   trades: Trade[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 
   @Column({ type: 'int', default: 0 })
   tokenVersion: number;

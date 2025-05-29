@@ -9,12 +9,15 @@ import { CreateTradeInput } from './dto/create-trade.input';
 import { UpdateTradeInput } from './dto/update-trade.input';
 import { GetTradesArgs } from './dto/get-trades.args';
 import { PaginatedTrades, TradeResponse, PaginatedTradesResponse, BooleanResponse } from './trade.types';
+import { ResourceOwnerGuard } from 'src/common/guards/trade-owner.guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Resolver()
 export class TradeResolver {
   constructor(private readonly tradeService: TradeService) {}
 
   @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 5 } }) // 5 requests using the default TTL
   @Query(() => PaginatedTradesResponse)
   async getAllTrade(
     @CurrentUser() user: User,
@@ -28,7 +31,7 @@ export class TradeResolver {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ResourceOwnerGuard)
   @Query(() => TradeResponse)
   async getTrade(
     @CurrentUser() user: User,
@@ -42,6 +45,7 @@ export class TradeResolver {
     };
   }
 
+  @Throttle({ default: { limit: 5 } })
   @UseGuards(JwtAuthGuard)
   @Mutation(() => TradeResponse)
   async createTrade(
@@ -56,7 +60,7 @@ export class TradeResolver {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ResourceOwnerGuard)
   @Mutation(() => TradeResponse)
   async updateTrade(
     @CurrentUser() user: User,
@@ -70,7 +74,8 @@ export class TradeResolver {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 5 } }) // 5 requests using the default TTL // 5 requests using the default TTL
+  @UseGuards(JwtAuthGuard, ResourceOwnerGuard)
   @Mutation(() => BooleanResponse)
   async deleteTrade(
     @CurrentUser() user: User,

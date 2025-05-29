@@ -1,4 +1,5 @@
 // src/trade/trade.entity.ts
+import { Comment } from '../comments/comments.entity';
 import { User } from '../user/user.entity';
 
 import {
@@ -7,6 +8,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('trades')
@@ -17,6 +19,9 @@ export class Trade {
   @ManyToOne(() => User, (user) => user.trades, { eager: true })
   @JoinColumn({ name: 'userId' })
   user: User;
+
+  @OneToMany(() => Comment, (comment) => comment.trade)
+  comments: Comment[];
 
   @Column()
   userId: number;
